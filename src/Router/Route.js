@@ -4,14 +4,16 @@
 
 import React from 'react'
 import {
-    BrowserRouter as Router,
+    HashRouter as Router,
     Route
 } from 'react-router-dom'
 import info from '../Component/info'
 import index from '../Component/index'
+import createHistory from 'history/createHashHistory'
+const history = createHistory()
 
 const RouteConfig = (
-    <Router >
+    <Router  history={history}>
         <div>
             <Route exact path="/" component={index}/>
             <Route path='/info' component={info}/>

@@ -12,7 +12,7 @@ class index extends Component {
     }
     render() {
         return (
-            <div> 大师范德萨发<a href="info">index</a></div>
+            <div> 大师范德萨发<a href="#/info">index</a></div>
         )
     }
 }
