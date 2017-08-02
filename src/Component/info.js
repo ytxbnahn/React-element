@@ -3,8 +3,6 @@
  */
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import PropTypes from 'prop-types'
-import {initRedux} from '../Redux/redux'
 
 
 class info extends  Component {
@@ -14,12 +12,10 @@ class info extends  Component {
             info: 'nihao info'
         }
     }
-    static propTypes = {
-        test: PropTypes.string,
-        initRedux: PropTypes.func
+    componentDidMount() {
     }
     handleClick(){
-        this.props.initRedux('ddddd')
+        console.log(this.props.state.initGetData.seller)
     }
     render() {
         return (
@@ -29,19 +25,10 @@ class info extends  Component {
 }
 const mapStateToProps = (state) => {
     return {
-        test: state.test
-    }
-}
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        initRedux: (it) => {
-            dispatch(initRedux(it))
-        }
+        state: state
     }
 }
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
+    mapStateToProps
 )(info)

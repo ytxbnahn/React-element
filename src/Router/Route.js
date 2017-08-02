@@ -7,16 +7,20 @@ import {
     HashRouter as Router,
     Route
 } from 'react-router-dom'
-import info from '../Component/info'
-import index from '../Component/index'
+// import info from '../Component/info'
+// import index from '../Component/index'
+import seller from '../Component/seller/seller'
+import goods from '../Component/goods/goods'
+import ratings from '../Component/ratings/ratings'
 import createHistory from 'history/createHashHistory'
 const history = createHistory()
 
 const RouteConfig = (
     <Router  history={history}>
         <div>
-            <Route exact path="/" component={index}/>
-            <Route path='/info' component={info}/>
+            <Route exact path='/' component={goods}/>
+            <Route path='/ratings' component={ratings}/>
+            <Route path='/seller' component={seller}/>
         </div>
     </Router>
 )

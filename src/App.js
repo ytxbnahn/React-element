@@ -1,13 +1,40 @@
 import React, { Component } from 'react';
 import './App.css';
-import RouteConfig from './Router/Route'
+import configureStore from './Router/Route';
+import Header from './Component/header/header';
+import {connect} from 'react-redux'
+import { initDataNeed } from './Redux/actions'
+import './style/base.less';
+import './style/app.less';
 
 class App extends Component {
+   componentWillMount() {
+       const { dispatch } = this.props
+       dispatch(initDataNeed())
+       console.log('---0000')
+   }
+   componentWillReceiveProps(){
+
+   }
   render() {
+    if(!this.props.state.initGetData.seller){
+      return (<div></div>)
+    }
     return (
-        <div>{RouteConfig}</div>
+        <div>
+            <Header/>
+            {configureStore}
+        </div>
     );
   }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+    return {
+        state: state
+    }
+}
+
+export default connect(
+    mapStateToProps
+)(App)
