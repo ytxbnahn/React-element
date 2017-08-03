@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "axios": "^0.16.2",
+    "better-scroll": "^0.4.0",
     "less-loader": "^4.0.5",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",

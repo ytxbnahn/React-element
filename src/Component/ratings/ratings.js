@@ -26,7 +26,7 @@ class ratings extends Component {
                         <Link to="/">商品</Link>
                     </div>
                     <div className="tab-item">
-                        <Link to="/ratings" className="active">评论</Link>
+                        <a href="javascript:void(0);" className="active">评论</a>
                     </div>
                     <div className="tab-item">
                         <Link to="/seller">商家</Link>
