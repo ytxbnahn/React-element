@@ -4,6 +4,7 @@
 import axios from 'axios'
 
 export const INIT_DATA = 'INIT_DATA'
+export const ADDFOOD_COUNT = 'ADDFOOD_COUNT'
 
 
 // function requestPosts(subreddit) {
@@ -20,6 +21,13 @@ function initGet(json) {
     }
 }
 
+// function addFoodCounteds(json) {
+//     return {
+//         type: ADDFOOD_COUNT,
+//         data: json
+//     }
+// }
+
 function initData() {
     return dispatch => {
         return axios.get('/data.json').then(function (res) {
@@ -30,6 +38,18 @@ function initData() {
     }
 }
 
+// function addFoodCounted(json) {
+//     return dispatch => {
+//         return dispatch(addFoodCounteds(json))
+//     }
+// }
+
+export const addFoodCount = (json) => {
+    return {
+        type: ADDFOOD_COUNT,
+        data: json
+    }
+}
 export function initDataNeed() {
     return (dispatch) => {
         return dispatch(initData())

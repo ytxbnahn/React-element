@@ -9,6 +9,9 @@ import {connect} from 'react-redux'
 import { Link } from 'react-router-dom'
 import BScroll from 'better-scroll';
 import Shopcart from '../shopcart/shopcart'
+import Cartcontrol from '../cartcontrol/cartcontrol'
+import Food from '../food/food'
+import { addFoodCount } from '../../Redux/actions'
 
 class goods extends Component {
     constructor() {
@@ -25,8 +28,14 @@ class goods extends Component {
             listHeight: [],
             scrollY: 0,
             selectedFood: {},
-            menuCurrent:0
+            menuCurrent:0,
+            selectFoods: [],
+            foodShow:false
         }
+    }
+    componentWillMount(){
+        const {dispatch} = this.props
+        dispatch(addFoodCount(this.props.state.initGetData.goods))
     }
     componentDidMount() {
         this.meunScroll = new BScroll(this.refs.menuWrapper, {
@@ -63,6 +72,29 @@ class goods extends Component {
         // let el = foodList[index];
         // this.foodsScroll.scrollToElement(el, 300);
     }
+    selectFood(food,event){
+        console.log(event)
+        console.log('food'+food)
+        this.setState({
+            foodShow:true
+        })
+    }
+    addFood(e,food) {
+        // console.log("json"+JSON.stringify(this.props.state.initGetData.goods))
+        const foods = []
+        this.props.state.modifyData.forEach((good,i) => {
+            good.foods.forEach((food,index) =>{
+                food.i = i;
+                food.index = index;
+                if(food.count>0){
+                    foods.push(food)
+                }
+            })
+        })
+        this.setState({
+            selectFoods: foods
+        })
+    }
     render() {
         const goods = this.props.state.initGetData.goods;
         const iconImg = {
@@ -88,7 +120,7 @@ class goods extends Component {
                             {
                                 goods.map((element, index)=>(
                                     <li
-                                        className={(this.state.menuCurrent==index?'current':'')+' menu-item'}
+                                        className={(this.state.menuCurrent===index?'current':'')+' menu-item'}
                                         onClick={this.selectMenu.bind(this,index)}
                                         key={index} >
                                         <span className="text border-1px">
@@ -103,15 +135,15 @@ class goods extends Component {
                     <div className="foods-wrapper" ref="foodsWrapper">
                         <ul>
                             {
-                                goods.map((item, index)=> (
-                                    <li className="food-list" ref="foodList" key={index}>
+                                goods.map((item, i)=> (
+                                    <li className="food-list" ref="foodList" key={i}>
                                         <h1 className="title">
                                             {item.name}
                                         </h1>
                                         <ul>
                                             {
                                                 item.foods.map((food, index)=> (
-                                                    <li className="food-item border-1px"  key={index}>
+                                                    <li className="food-item border-1px"  key={index} onClick={this.selectFood.bind(this,food)}>
                                                         <div className="icon">
                                                             <img style={iconImg} src={food.icon} alt="图片"/>
                                                         </div>
@@ -126,6 +158,12 @@ class goods extends Component {
                                                                 {food.oldPrice?(<span className="old">￥{food.oldPrice}</span>):''}
                                                             </div>
                                                             <div className="cartcontrol-wrapper">
+                                                                <Cartcontrol add={this.addFood.bind(this)}
+                                                                             food={food}
+                                                                             goods = {goods}
+                                                                             i={i}
+                                                                             index = {index}
+                                                                />
                                                             </div>
                                                         </div>
                                                     </li>
@@ -138,10 +176,10 @@ class goods extends Component {
                         </ul>
                     </div>
                     <Shopcart rel="shopcart"
-                              selectFoods='12'
-                              deliveryPrice= '32'
-                              minPrice='22'/>
+                              selectFoods={this.state.selectFoods}
+                              add={this.addFood.bind(this)}/>
                 </div>
+                {this.state.foodShow?(<Food/>):''}
             </div>
         )
     }

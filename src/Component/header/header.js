@@ -27,7 +27,6 @@ class header extends Component {
         })
     }
     hideDetail() {
-        console.log('222222222')
         this.setState({
             detailShow: false
         })
