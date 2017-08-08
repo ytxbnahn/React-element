@@ -5,7 +5,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import BScroll from 'better-scroll';
 import Cartcontrol from '../cartcontrol/cartcontrol'
-import { addFoodCount,initDataNeed } from '../../Redux/actions'
+import { initDataNeed } from '../../Redux/actions'
 
 class shopcart extends Component{
     constructor() {
@@ -107,7 +107,6 @@ class shopcart extends Component{
         })
     }
     render () {
-        console.log('shopcart')
         //console.log('========='+JSON.stringify(this.props.selectFoods))
         const count = this.totalCount();
         const totalPrice = this.totalPrice();
@@ -157,8 +156,8 @@ class shopcart extends Component{
                                                 <Cartcontrol add={this.addFood.bind(this)}
                                                              food={food}
                                                              goods = {this.props.state.initGetData.goods}
-                                                             i={food.i}
-                                                             index = {food.index}
+                                                             i={food.i} //goods[i]
+                                                             index = {food.index} // foods[index]
                                                 />
                                             </div>
                                         </li>

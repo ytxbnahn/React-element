@@ -9,7 +9,7 @@ class cartcontrol extends Component{
     componentWillMount() {
     }
     addCart(event) {
-        event.preventDefault;
+        event.stopPropagation()
         const {dispatch} = this.props
         this.props.goods[this.props.i].foods[this.props.index].count
             ? (this.props.goods[this.props.i].foods[this.props.index].count++)
@@ -18,15 +18,13 @@ class cartcontrol extends Component{
         this.props.add(event.target,this.props.food)
     }
     decreaseCart(event){
-        event.preventDefault;
+        event.stopPropagation()
         const { dispatch } = this.props
         this.props.goods[this.props.i].foods[this.props.index].count--
         dispatch(addFoodCount(this.props.goods))
         this.props.add(event.target,this.props.food)
     }
     render() {
-        console.log(this.props.food.count);
-
         return (
             <div className="cartcontrol">
                 {this.props.food.count>0?(

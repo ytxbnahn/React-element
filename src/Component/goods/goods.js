@@ -26,11 +26,15 @@ class goods extends Component {
             ],
             goods: [],
             listHeight: [],
-            scrollY: 0,
-            selectedFood: {},
+            scrollY: 1,
             menuCurrent:0,
             selectFoods: [],
-            foodShow:false
+            foodShow:false,
+            selectedFood:{
+                selectedFood: {},
+                i:0,
+                index:0
+            }
         }
     }
     componentWillMount(){
@@ -47,40 +51,54 @@ class goods extends Component {
             probeType: 3
         });
 
-        this.foodsScroll.on('scroll', (pos) => {
-            this.state.scrollY = Math.abs(Math.round(pos.y));
+        this.foodsScroll.on('scroll', (pos) => { //当页面滑动时，切换路由此方法无法体质持续触发 解除绑定也无效暂且这样处理
+            if(pos.y){ 
+                this.setState({
+                    scrollY : Math.abs(Math.round(pos.y))
+                })
+                this.setState((prevState, props) => ({
+                    menuCurrent: this.currentIndex()
+                }));
+            }else{
+               this.foodsScroll.destroy();
+            }
         });
-        // let foodList = this.refs.foodList;
-        // let height = 0;
-        // let listHeights = []
-        // listHeights.push(height);
-        // for (let i = 0; i < foodList.length; i++) {
-        //     let item = foodList[i];
-        //     height += item.clientHeight;
-        //     listHeights.push(height);
-        // }
-        // this.setState({
-        //     listHeight: listHeights
-        // })
+            
+        this._calculateHeight();
+    }
+    componentWillUnmount (){
+        
+        console.log('componentWillUnmount')
     }
     selectMenu(index) {
+        let foodList = this.refs.foodsWrapper.getElementsByClassName('food-list-hook');
+        let el = foodList[index];
+        this.foodsScroll.scrollToElement(el, 300);
         this.setState({
             menuCurrent: index
         })
-        // console.log(index)
-        // let foodList = this.refs.foodList;
-        // let el = foodList[index];
-        // this.foodsScroll.scrollToElement(el, 300);
+      
     }
-    selectFood(food,event){
+    selectFood(food,i,index,event){
         console.log(event)
         console.log('food'+food)
+        const selectedFood = {
+            selectedFood:food,
+            i:i,
+            index:index
+        }
         this.setState({
-            foodShow:true
+            foodShow:true,
+            selectedFood:selectedFood
+        })
+    }
+    hideFood() {
+        this.setState({
+            foodShow:false
         })
     }
     addFood(e,food) {
-        // console.log("json"+JSON.stringify(this.props.state.initGetData.goods))
+         console.log("json"+JSON.stringify(food))
         const foods = []
         this.props.state.modifyData.forEach((good,i) => {
             good.foods.forEach((food,index) =>{
@@ -95,6 +113,30 @@ class goods extends Component {
             selectFoods: foods
         })
     }
+    currentIndex() {
+        for (let i = 0; i < this.state.listHeight.length; i++) {
+            let height = this.state.listHeight[i];
+            let height2 = this.state.listHeight[i + 1];
+            if (!height2 || (this.state.scrollY >= height && this.state.scrollY < height2)) {
+                return i;
+            }
+        }
+        return 0;
+    }
+    _calculateHeight() {
+        let foodList =  this.refs.foodsWrapper.getElementsByClassName('food-list-hook');
+        let height = 0;
+        let listHeights = []
+        listHeights.push(height);
+        for (let i = 0; i < foodList.length; i++) {
+            let item = foodList[i];
+            height += item.clientHeight;
+            listHeights.push(height);
+        }
+        this.setState({
+            listHeight: listHeights
+        })
+    }
     render() {
         const goods = this.props.state.initGetData.goods;
         const iconImg = {
@@ -105,7 +147,7 @@ class goods extends Component {
             <div className="wrapper" >
                 <div className="tab border-1px">
                     <div className="tab-item">
-                        <a href="javascript:void(0)" className="active">商品</a>
+                        <span  className="active">商品</span>
                     </div>
                     <div className="tab-item">
                         <Link to="/ratings">评论</Link>
@@ -136,14 +178,14 @@ class goods extends Component {
                         <ul>
                             {
                                 goods.map((item, i)=> (
-                                    <li className="food-list" ref="foodList" key={i}>
+                                    <li className="food-list food-list-hook" ref="foodList" key={i}>
                                         <h1 className="title">
                                             {item.name}
                                         </h1>
                                         <ul>
                                             {
                                                 item.foods.map((food, index)=> (
-                                                    <li className="food-item border-1px"  key={index} onClick={this.selectFood.bind(this,food)}>
+                                                    <li className="food-item border-1px"  key={index} onClick={this.selectFood.bind(this,food,i,index)}>
                                                         <div className="icon">
                                                             <img style={iconImg} src={food.icon} alt="图片"/>
                                                         </div>
@@ -161,8 +203,8 @@ class goods extends Component {
                                                                 <Cartcontrol add={this.addFood.bind(this)}
                                                                              food={food}
                                                                              goods = {goods}
-                                                                             i={i}
-                                                                             index = {index}
+                                                                             i={i} // goods[i]
+                                                                             index = {index} // foods[index]
                                                                 />
                                                             </div>
                                                         </div>
@@ -179,7 +221,11 @@ class goods extends Component {
                               selectFoods={this.state.selectFoods}
                               add={this.addFood.bind(this)}/>
                 </div>
-                {this.state.foodShow?(<Food/>):''}
+                {this.state.foodShow?(<Food food={this.state.selectedFood} 
+                                            goods = {goods}
+                                            add={this.addFood.bind(this)}
+                                            hideFood={this.hideFood.bind(this)}/>)
+                                            :''}
             </div>
         )
     }

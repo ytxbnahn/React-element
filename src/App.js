@@ -11,10 +11,8 @@ class App extends Component {
    componentWillMount() {
        const { dispatch } = this.props
        dispatch(initDataNeed())
-       console.log('---0000')
    }
    componentWillReceiveProps(){
-
    }
   render() {
     if(!this.props.state.initGetData.seller){
