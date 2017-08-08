@@ -27,5 +27,5 @@ react + redux + react-redux + react-router + webpack + ES6
 ------
 在过程中遇到的问题：[参考链接](https://github.com/ytxbnahn/ytxbnahn.github.io/issues/6)
 
-##TODO
+## TODO
 修改代码中的bug
