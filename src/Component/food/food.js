@@ -1,5 +1,5 @@
 /**
- * Created by lau on 2017/8/4.
+ * Created by mty on 2017/8/4.
  */
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
