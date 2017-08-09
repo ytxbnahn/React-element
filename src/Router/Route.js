@@ -1,5 +1,5 @@
 /**
- * Created by lau on 2017/8/1.
+ * Created by mty on 2017/8/1.
  */
 
 import React from 'react'
@@ -7,8 +7,6 @@ import {
     HashRouter as Router,
     Route
 } from 'react-router-dom'
-// import info from '../Component/info'
-// import index from '../Component/index'
 import seller from '../Component/seller/seller'
 import goods from '../Component/goods/goods'
 import ratings from '../Component/ratings/ratings'

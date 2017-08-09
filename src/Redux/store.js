@@ -1,10 +1,9 @@
 /**
- * Created by lau on 2017/8/2.
+ * Created by mty on 2017/8/2.
  */
 import { createStore, applyMiddleware } from 'redux'
 import thunkMiddleware from 'redux-thunk'
-import promise from "redux-promise-middleware";
-// var thunkMiddleware = require("redux-thunk").default;
+import promise from "redux-promise-middleware"
 import { createLogger } from 'redux-logger'
 import rootReducer from './redux'
 
