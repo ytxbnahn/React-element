@@ -1,0 +1,3 @@
+项目由create-react-app创建，为了支持less所以修改了webpack.congf的文件。
+需要在npm install 后 修改 node_modules/_react-scripts@1.0.10@react-scripts/config/下面的配置文件(webpack.config.dev/webpack.config.prod)，
+使其支持less。 具体配置参考example.config文件夹下的文件。
